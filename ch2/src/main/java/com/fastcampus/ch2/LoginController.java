@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/login")
@@ -19,12 +21,17 @@ public class LoginController {
 		return "loginForm";
 	}
 
-	@PostMapping("/login")
-	public String login(String id, String pwd, boolean rememberId, HttpServletResponse response) throws Exception {
+	@GetMapping("/logout")
+	public String logout(HttpSession session) {
+		// 1. 세션을 종료
+		session.invalidate();
+		// 2. 홈으로 이동
+		return "redirect:/";
+	}
 
-		System.out.println("id = " + id);
-		System.out.println("pwd = " + pwd);
-		System.out.println("rememberId = " + rememberId);
+	@PostMapping("/login")
+	public String login(String id, String pwd, boolean rememberId, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
 
 		// 1. id와 pwd를 확인
 		if (!loginCheck(id, pwd)) {
@@ -36,6 +43,10 @@ public class LoginController {
 		}
 
 		// 2-2. id와 pwd가 일치하면,
+		// 세션 객체를 얻어오기
+		HttpSession session = request.getSession();
+		// 세션 객체에 id를 저장
+		session.setAttribute("id", id);
 
 		if (rememberId) {
 			// 쿠키를 생성
@@ -52,7 +63,7 @@ public class LoginController {
 		// 1. 쿠키를 생성
 		// 2. 응답에 저장
 		// 3. 홈으로 이동
-		
+
 		return "redirect:/";
 	}
 
