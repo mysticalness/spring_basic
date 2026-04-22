@@ -30,7 +30,7 @@ public class LoginController {
 	}
 
 	@PostMapping("/login")
-	public String login(String id, String pwd, boolean rememberId, HttpServletRequest request,
+	public String login(String id, String pwd, boolean rememberId, String toURL, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 
 		// 1. id와 pwd를 확인
@@ -49,22 +49,23 @@ public class LoginController {
 		session.setAttribute("id", id);
 
 		if (rememberId) {
-			// 쿠키를 생성
+			// 1. 쿠키를 생성
 			Cookie cookie = new Cookie("id", id);
+			// 2. 응답에 저장
 			response.addCookie(cookie);
 
 		} else {
-			// 쿠키를 삭제
+			// 1. 쿠키를 삭제
 			Cookie cookie = new Cookie("id", id);
 			cookie.setMaxAge(0);
+			// 2. 응답에 저장
 			response.addCookie(cookie);
 		}
 
-		// 1. 쿠키를 생성
-		// 2. 응답에 저장
-		// 3. 홈으로 이동
+		toURL = toURL == "" || toURL.equals("") ? "/" : toURL;
 
-		return "redirect:/";
+		// 3. 홈으로 이동
+		return "redirect:"+toURL;
 	}
 
 	private boolean loginCheck(String id, String pwd) {
