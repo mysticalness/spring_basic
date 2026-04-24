@@ -23,7 +23,7 @@ public class RegisterController {
 		binder.registerCustomEditor(String[].class, new StringArrayPropertyEditor("#"));
 //		binder.setValidator(new UserValidator()); // UserValidator를 WebDataBinder의 validator로 등록 
 //		binder.addValidators(new UserValidator());
-		List<Validator> validatorList =  binder.getValidators();
+		List<Validator> validatorList = binder.getValidators();
 //		System.out.println("validatorList = "+ validatorList);
 	}
 
@@ -56,6 +56,7 @@ public class RegisterController {
 //			String msg = URLEncoder.encode("id를 잘못 입력하셨습니다.", "utf-8");
 //			return "redirect:/register/add?msg=" + msg; // URL재작성(rewriting)
 //		}
+
 		// 2. DB에 신규회원 정보를 저장
 		return "registerInfo";
 	}
