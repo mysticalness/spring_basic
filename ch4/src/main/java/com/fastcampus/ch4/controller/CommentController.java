@@ -20,7 +20,10 @@ public class CommentController {
 
     // 댓글을 수정하는 메서드
     @PatchMapping("/comments/{cno}")
-    public ResponseEntity<String> modify(@PathVariable Integer cno, @RequestBody CommentDto dto) {
+    public ResponseEntity<String> modify(@PathVariable Integer cno, @RequestBody CommentDto dto, HttpSession session) {
+//        String commenter = (String) session.getAttribute("id");
+        String commenter = "asdf";
+        dto.setCommenter(commenter);
 
         dto.setCno(cno);
 
@@ -72,7 +75,7 @@ public class CommentController {
     public ResponseEntity<String> remove(@PathVariable Integer cno, Integer bno, HttpSession session) {
 
 //        String commenter = (String) session.getAttribute("id");
-        String commenter = "qwer";
+        String commenter = "asdf";
 
         try {
             int rowCnt = service.remove(cno, bno, commenter);
@@ -95,6 +98,7 @@ public class CommentController {
         List<CommentDto> list = null;
         try {
             list = service.getList(bno);
+            System.out.println("list = " + list);
             return new ResponseEntity<List<CommentDto>>(list, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
